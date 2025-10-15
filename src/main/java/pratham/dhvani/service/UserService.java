@@ -2,13 +2,12 @@ package pratham.dhvani.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import pratham.dhvani.dto.ApiResponseDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pratham.dhvani.dto.UserSignupRequestDto;
 import pratham.dhvani.model.User;
 import pratham.dhvani.repository.UserRepository;
-import java.util.regex.Pattern;
+import pratham.dhvani.validation.UserSignupValidator;
 
 @Service
 public class UserService {
@@ -19,49 +18,23 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final String PHONE_NUMBER_REGEX = "^\\+91\\s?\\d{10}$";
-    private static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_NUMBER_REGEX);
+    @Autowired
+    private UserSignupValidator userSignupValidator;
 
-    public ApiResponseDto signup(@RequestBody UserSignupRequestDto userSignupRequestDto) {
+    @Autowired
+    private UserExistenceService userExistenceService;
+
+    public ApiResponseDto signup(UserSignupRequestDto userSignupRequestDto) {
+
+        userSignupValidator.validate(userSignupRequestDto);
 
         String username = userSignupRequestDto.getUsername();
         String password = userSignupRequestDto.getPassword();
-        String confirmPassword = userSignupRequestDto.getConfirmPassword();
         String email = userSignupRequestDto.getEmail();
         String phoneNumber =  userSignupRequestDto.getPhoneNumber();
         String country = userSignupRequestDto.getCountry();
 
-        ApiResponseDto apiResponseDto = new ApiResponseDto();
-
-        if (!password.equals(confirmPassword)) {
-            apiResponseDto.setMessage("Passwords do not match");
-            apiResponseDto.setStatus("401");
-            return apiResponseDto;
-        }
-
-        if (!PHONE_PATTERN.matcher(phoneNumber).matches()) {
-            apiResponseDto.setMessage("Phone number format is invalid. Expected format: +91 XXXXXXXXXX");
-            apiResponseDto.setStatus("400");
-            return apiResponseDto;
-        }
-
-        if (userRepository.existsByUsername(username)) {
-            apiResponseDto.setMessage("Username already exists");
-            apiResponseDto.setStatus("409");
-            return apiResponseDto;
-        }
-
-        if (userRepository.existsByEmail(email)) {
-            apiResponseDto.setMessage("Email already exists");
-            apiResponseDto.setStatus("409");
-            return apiResponseDto;
-        }
-
-        if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            apiResponseDto.setMessage("Phone number already exists");
-            apiResponseDto.setStatus("409");
-            return apiResponseDto;
-        }
+        userExistenceService.checkExistence(userSignupRequestDto);
 
         User user = new User();
         user.setUsername(username);
@@ -71,6 +44,7 @@ public class UserService {
         user.setCountry(country);
         userRepository.save(user);
 
+        ApiResponseDto apiResponseDto = new ApiResponseDto();
         apiResponseDto.setMessage("User signed up successfully");
         apiResponseDto.setStatus("200");
         return apiResponseDto;

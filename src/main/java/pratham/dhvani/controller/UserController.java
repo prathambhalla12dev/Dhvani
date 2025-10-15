@@ -19,6 +19,8 @@ public class UserController {
 
     @PostMapping("/signup")
     public ApiResponseDto signup(@RequestBody UserSignupRequestDto userSignupRequestDto) {
-
+        ApiResponseDto response = new ApiResponseDto();
+        response = userService.signup(userSignupRequestDto);
+        return response;
     }
 }
