@@ -20,6 +20,9 @@ public class UserSignupRequestDto {
     @Email(message = "Email should be valid")
     private String email;
 
+    @NotBlank(message = "Phone Number is required")
+    private String phoneNumber;
+
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
