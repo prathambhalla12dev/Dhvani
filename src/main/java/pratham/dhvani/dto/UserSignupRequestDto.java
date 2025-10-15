@@ -24,7 +24,7 @@ public class UserSignupRequestDto {
     private String phoneNumber;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, message = "Password must be of at least 8 characters")
     private String password;
 
     @NotBlank(message = "Confirm your password")
