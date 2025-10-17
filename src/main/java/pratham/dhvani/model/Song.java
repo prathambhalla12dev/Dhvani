@@ -1,12 +1,6 @@
 package pratham.dhvani.model;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Lob;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,15 +25,19 @@ public class Song {
     private String title;
 
     // 3
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
     // 4
+    @Enumerated(EnumType.STRING)
     private Mood mood;
 
     // 5
+    @Enumerated(EnumType.STRING)
     private Energy energy;
 
     // 6
+    @Enumerated(EnumType.STRING)
     private Language language;
 
     // 7

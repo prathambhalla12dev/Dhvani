@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,36 +23,29 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class User {
 
-    // 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 2
     @Column(name="creation_time")
     private Long creationTime;
 
-    // 3
     @Column(name="updation_time")
     private Long updationTime;
 
-    // 4
     private String username;
 
-    // 5
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    // 6
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    // 7
+    @Enumerated(EnumType.STRING)
     private Country country;
 
-    // 8
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    // 9
     private String password;
 }
