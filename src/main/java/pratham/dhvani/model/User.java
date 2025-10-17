@@ -21,27 +21,36 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class User {
 
+    // 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 2
     @Column(name="creation_time")
     private Long creationTime;
 
+    // 3
     @Column(name="updation_time")
     private Long updationTime;
 
+    // 4
     private String username;
 
+    // 5
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    // 6
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    // 7
     private Country country;
 
+    // 8
     private Gender gender;
 
+    // 9
     private String password;
 }

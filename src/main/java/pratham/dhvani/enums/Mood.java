@@ -1,4 +1,4 @@
 package pratham.dhvani.enums;
 
-public class Mood {
+public enum Mood {
 }
