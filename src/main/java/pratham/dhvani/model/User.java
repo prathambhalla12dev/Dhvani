@@ -29,7 +29,7 @@ public class User {
     private Long creationTime;
 
     @Column(name="updation_time")
-    private Long updateTime;
+    private Long updationTime;
 
     private String username;
 
