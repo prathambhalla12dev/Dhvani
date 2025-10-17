@@ -1,9 +1,16 @@
 package pratham.dhvani.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pratham.dhvani.enums.Country;
+import pratham.dhvani.enums.Gender;
 
 import java.time.LocalDate;
 
@@ -18,8 +25,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="creation_time")
+    private Long creationTime;
+
+    @Column(name="updation_time")
+    private Long updateTime;
+
     private String username;
-    private String email;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -27,15 +39,9 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    private String city;
+    private Country country;
 
-    @Column(name = "state_or_province")
-    private String stateOrProvince;
-
-    private String country;
-
-    @Column(name = "pin_code")
-    private String pinCode;
+    private Gender gender;
 
     private String password;
 }
