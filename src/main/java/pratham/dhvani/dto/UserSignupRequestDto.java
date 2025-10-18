@@ -1,35 +1,42 @@
 package pratham.dhvani.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import pratham.dhvani.enums.Country;
+import pratham.dhvani.enums.Gender;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSignupRequestDto {
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "username is required")
+    @NotNull
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    private String email;
-
-    @NotBlank(message = "Phone Number is required")
+    @NotBlank(message = "phone Number is required")
+    @NotNull
     private String phoneNumber;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be of at least 8 characters")
+    @NotBlank(message = "password is required")
+    @NotNull
+    @Size(min = 8, message = "password must be of at least 8 characters")
     private String password;
 
-    @NotBlank(message = "Confirm your password")
+    @NotBlank(message = "confirm your password")
+    @NotNull
     private String confirmPassword;
 
-    @NotBlank(message = "Country is required")
-    private String country;
+    @NotBlank(message = "country is required")
+    @NotNull
+    private Country country;
+
+    @NotBlank(message = "please add the Date of Birth")
+    @NotNull
+    private String dateOfBirth;
+
+    @NotBlank(message = "please enter your gender")
+    @NotNull
+    private Gender gender;
 }
