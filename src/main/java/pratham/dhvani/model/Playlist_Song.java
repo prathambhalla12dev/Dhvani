@@ -1,17 +1,14 @@
 package pratham.dhvani.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name="playlist")
+@Table(name="playlist_song")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Playlist {
-
+public class Playlist_Song {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -22,10 +19,4 @@ public class Playlist {
 
     @Column(name="updation_time", nullable=false)
     private long updationTime;
-
-    @Column(name="name")
-    private String name;
-
-    @Column(name="user_id")
-    private long userId;
 }

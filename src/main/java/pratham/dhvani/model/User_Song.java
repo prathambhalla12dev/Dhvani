@@ -1,17 +1,15 @@
 package pratham.dhvani.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import pratham.dhvani.enums.UserPreference;
 
 @Entity
-@Table(name="playlist")
+@Table(name="user_song")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Playlist {
-
+public class User_Song {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -23,9 +21,13 @@ public class Playlist {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="name")
-    private String name;
-
     @Column(name="user_id")
-    private long userId;
+    private long user_id;
+
+    @Column(name="song_id")
+    private long song_id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_preference")
+    private UserPreference userPreference;
 }
