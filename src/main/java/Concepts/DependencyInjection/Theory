@@ -1,1 +1,0 @@
-Objects receive their dependencies rather than creating them manually reducing tight coupling between classes

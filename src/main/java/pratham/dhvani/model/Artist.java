@@ -8,7 +8,7 @@ import pratham.dhvani.enums.Gender;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="Artist")
+@Table(name="artist")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +24,7 @@ public class Artist {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="name")
+    @Column(name="name", unique = true)
     private String name;
 
     @Column(name="country")

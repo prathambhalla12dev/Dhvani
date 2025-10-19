@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="playlist")
+@Table(name="album")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class Album {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="title")
+    @Column(name="title", unique=true)
     private String title;
 
     @Column(name="artist_id")

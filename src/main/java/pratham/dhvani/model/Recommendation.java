@@ -1,14 +1,17 @@
 package pratham.dhvani.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="playlist_song", uniqueConstraints = @UniqueConstraint(columnNames = {"playlist_id", "song_id"}))
+@Table(name="recommendation")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Playlist_Song {
+public class Recommendation {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -20,8 +23,8 @@ public class Playlist_Song {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="playlist_id")
-    private long playlistId;
+    @Column(name="user_id")
+    private long userId;
 
     @Column(name="song_id")
     private long songId;

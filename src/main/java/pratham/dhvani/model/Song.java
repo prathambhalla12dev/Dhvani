@@ -37,10 +37,10 @@ public class Song {
     @Enumerated(EnumType.STRING)
     private Mood mood;
 
-    @Column(name="artist_id", unique=true)
+    @Column(name="artist_id")
     private long artistId;
 
-    @Column(name="album_id", unique=true)
+    @Column(name="album_id")
     private long albumId;
 
     @Column(name="language")
@@ -53,5 +53,4 @@ public class Song {
     @Lob
     @Column(name="mp3_file",unique = true)
     private byte[] mp3File;
-
 }

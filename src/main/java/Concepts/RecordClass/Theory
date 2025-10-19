@@ -1,7 +1,0 @@
-Record in Java
-
-Read only data holder
-
-- immutable data carriers (no setters)
-- provides constructor (all values are must)
-- provides getters, equals(), toString(), hashCode()
