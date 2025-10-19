@@ -7,5 +7,12 @@ import lombok.*;
 @AllArgsConstructor
 public class ApiResponseDto {
     private String message;
-    private int status;
+    private String status;
+    private Object data;
+
+    public ApiResponseDto(String message, String status) {
+        this.message = message;
+        this.status = status;
+        this.data = null;
+    }
 }

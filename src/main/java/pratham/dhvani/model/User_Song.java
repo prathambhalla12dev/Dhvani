@@ -5,7 +5,7 @@ import lombok.*;
 import pratham.dhvani.enums.UserPreference;
 
 @Entity
-@Table(name="user_song", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id, song_id"}))
+@Table(name="user_song", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "song_id"}) )
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
