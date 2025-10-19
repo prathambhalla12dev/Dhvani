@@ -14,18 +14,18 @@ public class UserValidationService {
 
     public void validateUsername(String username) {
         if (userRepository.existsByUsername(username)) {
-            throw new UserAlreadyExistsException("Username already exists");
+            throw new UserAlreadyExistsException("username already exists");
         }
     }
     public void validatePhoneNumber(String phoneNumber) {
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new UserAlreadyExistsException("Phone number already registered");
+            throw new UserAlreadyExistsException("phone number already registered");
         }
     }
 
     public void validatePasswordMatch(String password, String confirmPassword) {
         if (password == null || confirmPassword == null) {
-            throw new IllegalArgumentException("Password fields cannot be null");
+            throw new IllegalArgumentException("password fields cannot be null");
         }
         if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("Passwords do not match");

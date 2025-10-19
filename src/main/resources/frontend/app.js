@@ -5,20 +5,21 @@ const CONFIG = {
     USERNAME_KEY: 'username'
 };
 
-// ==================== STATE MANAGEMENT ====================
+// ==================== STATE MANAGEMENT (In-Memory Storage) ====================
 const state = {
-    token: localStorage.getItem(CONFIG.TOKEN_KEY),
-    currentUser: localStorage.getItem(CONFIG.USERNAME_KEY),
+    token: null,
+    currentUser: null,
     allSongs: [],
     allArtists: [],
-    allAlbums: []
+    allAlbums: [],
+    isInitialized: false
 };
 
 // ==================== INITIALIZATION ====================
 window.onload = () => {
-    if (state.token && state.currentUser) {
-        showMainContent();
-    }
+    console.log('Application loaded');
+    // Note: In-memory storage means user will need to login each time
+    // For persistent sessions, backend should implement refresh tokens
 };
 
 // ==================== AUTH FUNCTIONS ====================
@@ -48,14 +49,14 @@ async function handleLogin(e) {
         if (data.status === 'SUCCESS') {
             state.token = data.data.token;
             state.currentUser = data.data.username;
-            localStorage.setItem(CONFIG.TOKEN_KEY, state.token);
-            localStorage.setItem(CONFIG.USERNAME_KEY, state.currentUser);
             showMainContent();
+            showAlert('authAlert', 'Login successful!', 'success');
         } else {
             showAlert('authAlert', data.message, 'error');
         }
     } catch (error) {
-        showAlert('authAlert', 'Login failed. Please try again.', 'error');
+        console.error('Login error:', error);
+        showAlert('authAlert', 'Login failed. Please check if the backend is running on port 8080.', 'error');
     }
 }
 
@@ -98,15 +99,17 @@ async function handleSignup(e) {
             showAlert('authAlert', data.message, 'error');
         }
     } catch (error) {
-        showAlert('authAlert', 'Signup failed. Please try again.', 'error');
+        console.error('Signup error:', error);
+        showAlert('authAlert', 'Signup failed. Please check if the backend is running.', 'error');
     }
 }
 
 function logout() {
     state.token = null;
     state.currentUser = null;
-    localStorage.removeItem(CONFIG.TOKEN_KEY);
-    localStorage.removeItem(CONFIG.USERNAME_KEY);
+    state.allSongs = [];
+    state.allArtists = [];
+    state.allAlbums = [];
     document.getElementById('authSection').classList.add('active');
     document.getElementById('mainContent').classList.remove('active');
     document.getElementById('header').style.display = 'none';
@@ -117,7 +120,10 @@ function showMainContent() {
     document.getElementById('mainContent').classList.add('active');
     document.getElementById('header').style.display = 'flex';
     document.getElementById('welcomeText').textContent = `Welcome, ${state.currentUser}`;
-    loadAllData();
+    if (!state.isInitialized) {
+        loadAllData();
+        state.isInitialized = true;
+    }
 }
 
 // ==================== NAVIGATION ====================
@@ -323,9 +329,10 @@ function displayRecommendations(recommendations) {
     grid.innerHTML = recommendations.map(rec => `
         <div class="card">
             <div class="card-title">${escapeHtml(rec.title || 'Song')}</div>
-            <div class="card-info">Recommended for you</div>
+            <div class="card-info">Genre: ${rec.genre || 'N/A'}</div>
+            <div class="card-info">Language: ${rec.language || 'N/A'}</div>
             <div class="card-actions">
-                <button class="btn btn-primary btn-small" onclick="setPreference(${rec.songId || rec.id}, 'LIKED')">❤️ Like</button>
+                <button class="btn btn-primary btn-small" onclick="setPreference(${rec.id}, 'LIKED')">❤️ Like</button>
             </div>
         </div>
     `).join('');
