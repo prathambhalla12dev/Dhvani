@@ -22,7 +22,7 @@ public class Album {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="title", unique=true)
+    @Column(name="title")
     private String title;
 
     @Column(name="artist_id")

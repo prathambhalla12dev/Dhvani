@@ -24,7 +24,7 @@ public class Artist {
     @Column(name="updation_time", nullable=false)
     private long updationTime;
 
-    @Column(name="name", unique = true)
+    @Column(name="name")
     private String name;
 
     @Column(name="country")
