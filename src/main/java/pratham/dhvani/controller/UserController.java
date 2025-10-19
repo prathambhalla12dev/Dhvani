@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
+import pratham.dhvani.dto.UserLoginRequestDto;
+import pratham.dhvani.dto.UserLoginResponseDto;
 import pratham.dhvani.service.UserService;
 
 @Slf4j
@@ -23,15 +25,20 @@ public class UserController {
     public @NonNull ResponseEntity<@NonNull ApiResponseDto> signup(
             @Valid @RequestBody @NonNull UserSignupRequestDto userSignupRequestDto) {
         log.info("Received signup request for username: {}", userSignupRequestDto.getUsername());
-
         ApiResponseDto response = userService.signup(userSignupRequestDto);
-
         if (response == null) {
-            log.error("Service returned null response - this should never happen");
+            log.error("Service returned null response");
             response = new ApiResponseDto("An unexpected error occurred", "ERROR");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public @NonNull ResponseEntity<@NonNull UserLoginResponseDto> login(
+            @Valid @RequestBody @NonNull UserLoginRequestDto userLoginRequestDto) {
+        log.info("Received login request for username: {}", userLoginRequestDto.getUsername());
+        UserLoginResponseDto response = userService.login(userLoginRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
