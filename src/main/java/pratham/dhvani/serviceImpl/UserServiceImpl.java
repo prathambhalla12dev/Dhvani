@@ -1,6 +1,8 @@
 package pratham.dhvani.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
@@ -14,6 +16,9 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
@@ -35,7 +40,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setDateOfBirth(LocalDate.parse(dto.getDateOfBirth()));
         user.setCountry(dto.getCountry());
         user.setGender(dto.getGender());
