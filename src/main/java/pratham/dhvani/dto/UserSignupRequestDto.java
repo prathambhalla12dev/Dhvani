@@ -32,8 +32,7 @@ public class UserSignupRequestDto {
     @NotNull(message = "country is required")
     private Country country;
 
-    @NotBlank(message = "date of birth is required")
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "date must be in YYYY-MM-DD format")
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "date of birth must be in YYYY-MM-DD format")
     private String dateOfBirth;
 
     @NotNull(message = "gender is required")

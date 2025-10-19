@@ -33,4 +33,16 @@ public class GlobalExceptionHandler {
         ApiResponseDto response = new ApiResponseDto(firstErrorMessage, "ERROR");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        ApiResponseDto response = new ApiResponseDto(ex.getMessage(), "ERROR");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleIllegalArgument(IllegalArgumentException ex) {
+        ApiResponseDto response = new ApiResponseDto(ex.getMessage(), "ERROR");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }
