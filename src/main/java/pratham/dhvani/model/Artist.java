@@ -27,9 +27,11 @@ public class Artist {
     @Column(name="name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="country")
     private Country country;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="gender")
     private Gender gender;
 
