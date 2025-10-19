@@ -1,6 +1,6 @@
 package pratham.dhvani.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pratham.dhvani.dto.UserSignupRequestDto;
@@ -8,18 +8,11 @@ import pratham.dhvani.model.User;
 
 import java.time.LocalDate;
 
-/**
- * Mapper for converting between User DTOs and Entities
- * Separation of Concerns: Mapping logic separated from service logic
- */
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
-    /**
-     * Maps UserSignupRequestDto to User entity
-     */
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public User toEntity(UserSignupRequestDto dto) {
         if (dto == null) {
@@ -42,9 +35,6 @@ public class UserMapper {
         return user;
     }
 
-    /**
-     * Parses date string to LocalDate
-     */
     private LocalDate parseDate(String dateString) {
         try {
             return LocalDate.parse(dateString);
