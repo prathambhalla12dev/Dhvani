@@ -51,6 +51,6 @@ public class Song {
     private double tempo;
 
     @Lob
-    @Column(name="mp3_file",unique = true)
+    @Column(name = "mp3_file", columnDefinition = "bytea")
     private byte[] mp3File;
 }
