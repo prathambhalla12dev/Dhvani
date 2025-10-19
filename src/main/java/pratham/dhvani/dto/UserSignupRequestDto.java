@@ -18,7 +18,7 @@ public class UserSignupRequestDto {
     private String username;
 
     @NotBlank(message = "phone number is required")
-    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "invalid phone number format")
+    @Pattern(regexp = "^\\+\\d{1,3}\\s\\d{10}$", message = "invalid phone number format. Use: +XX XXXXXXXXXX")
     private String phoneNumber;
 
     @NotBlank(message = "password is required")
