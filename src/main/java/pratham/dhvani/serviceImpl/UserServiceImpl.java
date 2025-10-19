@@ -1,57 +1,45 @@
 package pratham.dhvani.serviceImpl;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
-import pratham.dhvani.exception.UserAlreadyExistsException;
+import pratham.dhvani.mapper.UserMapper;
 import pratham.dhvani.model.User;
 import pratham.dhvani.repository.UserRepository;
 import pratham.dhvani.service.UserService;
+import pratham.dhvani.service.UserValidationService;
 
-import java.time.LocalDate;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
+    private final UserValidationService validationService;
+    private final UserMapper userMapper;
 
     @Override
-    public ApiResponseDto signup(UserSignupRequestDto dto) {
+    @Transactional
+    public @NonNull ApiResponseDto signup(@NonNull UserSignupRequestDto dto) {
+        log.info("Processing signup request for username: {}", dto.getUsername());
 
-        if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new UserAlreadyExistsException("Username already exists");
+        try {
+            validationService.validateSignupRequest(dto);
+
+            User user = userMapper.toEntity(dto);
+
+            User savedUser = userRepository.save(user);
+
+            log.info("User registered successfully with ID: {}", savedUser.getId());
+            return new ApiResponseDto("User registered successfully", "SUCCESS");
+
+        } catch (Exception e) {
+            log.error("Unexpected error during signup for username: {}", dto.getUsername(), e);
+            throw e;
         }
-
-        if (userRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
-            throw new UserAlreadyExistsException("Phone number already registered");
-        }
-
-        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-            throw new IllegalArgumentException("Passwords do not match");
-        }
-
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setDateOfBirth(LocalDate.parse(dto.getDateOfBirth()));
-        user.setCountry(dto.getCountry());
-        user.setGender(dto.getGender());
-        user.setFullName(dto.getFullName());
-
-        long now = System.currentTimeMillis();
-        user.setCreationTime(now);
-        user.setUpdationTime(now);
-
-        userRepository.save(user);
-
-        return new ApiResponseDto("User registered successfully", "SUCCESS");
     }
 }
