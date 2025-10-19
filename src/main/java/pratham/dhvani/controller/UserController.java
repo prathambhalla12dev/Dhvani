@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
 import pratham.dhvani.dto.UserLoginRequestDto;
-import pratham.dhvani.dto.UserLoginResponseDto;
 import pratham.dhvani.service.UserService;
 
 @Slf4j
@@ -35,10 +34,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public @NonNull ResponseEntity<@NonNull UserLoginResponseDto> login(
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> login(
             @Valid @RequestBody @NonNull UserLoginRequestDto userLoginRequestDto) {
         log.info("Received login request for username: {}", userLoginRequestDto.getUsername());
-        UserLoginResponseDto response = userService.login(userLoginRequestDto);
+        ApiResponseDto response = userService.login(userLoginRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

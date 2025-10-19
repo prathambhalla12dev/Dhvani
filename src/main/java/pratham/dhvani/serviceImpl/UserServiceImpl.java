@@ -1,5 +1,6 @@
 package pratham.dhvani.serviceImpl;
 
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
 import pratham.dhvani.dto.UserLoginRequestDto;
-import pratham.dhvani.dto.UserLoginResponseDto;
 import pratham.dhvani.mapper.UserMapper;
 import pratham.dhvani.model.User;
 import pratham.dhvani.repository.UserRepository;
@@ -35,17 +35,17 @@ public class UserServiceImpl implements UserService {
             validationService.validateSignupRequest(dto);
             User user = userMapper.toEntity(dto);
             User savedUser = userRepository.save(user);
-            log.info("User registered successfully with ID: {}", savedUser.getId());
-            return new ApiResponseDto("User registered successfully", "SUCCESS");
+            log.info("user registered successfully with ID: {}", savedUser.getId());
+            return new ApiResponseDto("user registered successfully", "SUCCESS");
         } catch (Exception e) {
-            log.error("Unexpected error during signup for username: {}", dto.getUsername(), e);
+            log.error("unexpected error during signup for username: {}", dto.getUsername(), e);
             throw e;
         }
     }
 
     @Override
     @Transactional
-    public @NonNull UserLoginResponseDto login(@NonNull UserLoginRequestDto dto) {
+    public @NonNull ApiResponseDto login(@NonNull UserLoginRequestDto dto) {
         log.info("Processing login request for username: {}", dto.getUsername());
 
         User user = userRepository.findByUsername(dto.getUsername())
@@ -60,6 +60,6 @@ public class UserServiceImpl implements UserService {
         long expiresIn = 86400;
 
         log.info("User logged in successfully: {}", dto.getUsername());
-        return new UserLoginResponseDto(token, "Bearer", expiresIn, user.getUsername());
+        return new ApiResponseDto("user logged in successfully", HTTPResponse.SC_OK);
     }
 }

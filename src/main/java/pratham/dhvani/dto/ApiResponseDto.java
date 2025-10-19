@@ -7,5 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 public class ApiResponseDto {
     private String message;
-    private String status;
+    private int status;
 }
