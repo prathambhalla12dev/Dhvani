@@ -1,7 +1,7 @@
 package pratham.dhvani.exception;
 
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pratham.dhvani.dto.ApiResponseDto;
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleHttpMessageNotReadable() {
         ApiResponseDto response = new ApiResponseDto(
                 "Request body is missing or malformed. Please send valid JSON data.",
                 "ERROR"
@@ -23,45 +22,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleUserAlreadyExists(
-            @NonNull UserAlreadyExistsException ex) {
-        log.error("User already exists: {}", ex.getMessage());
-        ApiResponseDto response = new ApiResponseDto(ex.getMessage(), "ERROR");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleIllegalArgument(
-            @NonNull IllegalArgumentException ex) {
-        log.error("Illegal argument: {}", ex.getMessage());
-        ApiResponseDto response = new ApiResponseDto(ex.getMessage(), "ERROR");
-        return ResponseEntity.badRequest().body(response);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleValidationErrors(
-            @NonNull MethodArgumentNotValidException ex) {
-        String errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(f -> f.getField() + ": " + f.getDefaultMessage())
-                .reduce((a, b) -> a + "; " + b)
-                .orElse("Validation error");
-        log.error("Validation error: {}", errors);
-        ApiResponseDto response = new ApiResponseDto(errors, "ERROR");
-        return ResponseEntity.badRequest().body(response);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleGeneralException(
-            @NonNull Exception ex) {
-        log.error("Internal server error occurred", ex);
-
-        String errorMessage = "Internal server error: " + ex.getClass().getSimpleName();
-        if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
-            errorMessage += " - " + ex.getMessage();
-        }
-
-        ApiResponseDto response = new ApiResponseDto(errorMessage, "ERROR");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
+        String firstErrorMessage = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .findFirst()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("Invalid input data.");
+        ApiResponseDto response = new ApiResponseDto(firstErrorMessage, "ERROR");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
