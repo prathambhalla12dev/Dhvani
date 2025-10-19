@@ -39,4 +39,8 @@ public class UserSignupRequestDto {
     @NotBlank(message = "please enter your gender")
     @NotNull
     private Gender gender;
+
+    @NotBlank(message = "please enter your full name")
+    @NotNull
+    private String fullName;
 }

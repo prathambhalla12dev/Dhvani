@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setDateOfBirth(LocalDate.parse(dto.getDateOfBirth()));
         user.setCountry(dto.getCountry());
         user.setGender(dto.getGender());
+        user.setFullName(dto.getFullName());
 
         long now = System.currentTimeMillis();
         user.setCreationTime(now);
