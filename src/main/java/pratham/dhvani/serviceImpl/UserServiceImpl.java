@@ -11,7 +11,6 @@ import pratham.dhvani.mapper.UserMapper;
 import pratham.dhvani.model.User;
 import pratham.dhvani.repository.UserRepository;
 import pratham.dhvani.service.UserService;
-import pratham.dhvani.service.UserValidationService;
 
 @Slf4j
 @Service

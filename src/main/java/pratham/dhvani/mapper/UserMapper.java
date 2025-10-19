@@ -1,5 +1,7 @@
 package pratham.dhvani.mapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pratham.dhvani.dto.UserSignupRequestDto;
 import pratham.dhvani.model.User;
@@ -16,6 +18,9 @@ public class UserMapper {
     /**
      * Maps UserSignupRequestDto to User entity
      */
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User toEntity(UserSignupRequestDto dto) {
         if (dto == null) {
             throw new IllegalArgumentException("UserSignupRequestDto cannot be null");
@@ -24,7 +29,7 @@ public class UserMapper {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setDateOfBirth(parseDate(dto.getDateOfBirth()));
         user.setCountry(dto.getCountry());
         user.setGender(dto.getGender());

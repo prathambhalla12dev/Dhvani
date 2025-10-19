@@ -17,7 +17,7 @@ import pratham.dhvani.service.UserService;
  */
 @Slf4j
 @RestController
-@RequestMapping("/dhvani/users")
+@RequestMapping("/dhvani/user")
 @RequiredArgsConstructor
 public class UserController {
 

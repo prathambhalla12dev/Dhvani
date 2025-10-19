@@ -1,4 +1,4 @@
-package pratham.dhvani.service;
+package pratham.dhvani.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
