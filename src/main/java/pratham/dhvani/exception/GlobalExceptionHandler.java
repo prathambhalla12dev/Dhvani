@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +13,15 @@ import pratham.dhvani.dto.ApiResponseDto;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        ApiResponseDto response = new ApiResponseDto(
+                "Request body is missing or malformed. Please send valid JSON data.",
+                "ERROR"
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleUserAlreadyExists(
@@ -44,10 +54,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public @NonNull ResponseEntity<@NonNull ApiResponseDto> handleGeneralException(
             @NonNull Exception ex) {
-        // Log the actual error details for debugging
         log.error("Internal server error occurred", ex);
 
-        // Return generic message to user but with actual error class name for debugging
         String errorMessage = "Internal server error: " + ex.getClass().getSimpleName();
         if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
             errorMessage += " - " + ex.getMessage();
