@@ -4,6 +4,5 @@ import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
 
 public interface UserService {
-
     ApiResponseDto signup(UserSignupRequestDto userSignupRequestDto);
 }
