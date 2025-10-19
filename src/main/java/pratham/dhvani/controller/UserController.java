@@ -11,10 +11,6 @@ import pratham.dhvani.dto.ApiResponseDto;
 import pratham.dhvani.dto.UserSignupRequestDto;
 import pratham.dhvani.service.UserService;
 
-/**
- * Controller for user-related endpoints
- * Ensures ApiResponseDto is never null in responses
- */
 @Slf4j
 @RestController
 @RequestMapping("/dhvani/user")

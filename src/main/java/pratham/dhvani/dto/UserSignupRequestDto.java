@@ -15,6 +15,7 @@ public class UserSignupRequestDto {
 
     @NotBlank(message = "username is required")
     @Size(min = 3, max = 50, message = "username must be between 3 and 50 characters")
+    @Pattern(regexp = "^[a-z0-9_]+$", message = "username must contain only lowercase letters, numbers, and underscores")
     private String username;
 
     @NotBlank(message = "phone number is required")
