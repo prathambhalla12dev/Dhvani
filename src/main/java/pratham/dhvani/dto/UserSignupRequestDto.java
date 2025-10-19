@@ -12,10 +12,10 @@ public class UserSignupRequestDto {
 
     @NotBlank(message = "username is required")
     @NotNull
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
+    @Size(min = 3, max = 50, message = "username must be between 3 and 50 characters")
     private String username;
 
-    @NotBlank(message = "phone Number is required")
+    @NotBlank(message = "phone number is required")
     @NotNull
     private String phoneNumber;
 
