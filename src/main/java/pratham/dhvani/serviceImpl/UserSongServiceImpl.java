@@ -38,7 +38,7 @@ public class UserSongServiceImpl implements UserSongService {
             throw new IllegalArgumentException("Song not found");
         }
 
-        Optional<User_Song> existing = userSongRepository.findByUser_idAndSong_id(user.getId(), songId);
+        Optional<User_Song> existing = userSongRepository.findByUserIdAndSongId(user.getId(), songId);
 
         User_Song userSong;
         if (existing.isPresent()) {
@@ -65,7 +65,7 @@ public class UserSongServiceImpl implements UserSongService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        List<User_Song> userSongs = userSongRepository.findByUser_idAndUserPreference(user.getId(), preference);
+        List<User_Song> userSongs = userSongRepository.findByUserIdAndPreference(user.getId(), preference);
         List<Song> songs = userSongs.stream()
                 .map(us -> songRepository.findById(us.getSong_id()).orElse(null))
                 .filter(Objects::nonNull)
@@ -80,7 +80,7 @@ public class UserSongServiceImpl implements UserSongService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Optional<User_Song> userSong = userSongRepository.findByUser_idAndSong_id(user.getId(), songId);
+        Optional<User_Song> userSong = userSongRepository.findByUserIdAndSongId(user.getId(), songId);
 
         return userSong.map(user_song -> new ApiResponseDto("Preference retrieved successfully", "SUCCESS", user_song.getUserPreference())).orElseGet(() -> new ApiResponseDto("No preference set", "SUCCESS", UserPreference.NEUTRAL));
     }
@@ -91,7 +91,7 @@ public class UserSongServiceImpl implements UserSongService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        userSongRepository.deleteByUser_idAndSong_id(user.getId(), songId);
+        userSongRepository.deleteByUserIdAndSongId(user.getId(), songId);
         return new ApiResponseDto("Preference removed successfully", "SUCCESS");
     }
 }

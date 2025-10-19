@@ -54,8 +54,8 @@ public class RecommendationServiceImpl implements RecommendationService {
         recommendationRepository.deleteByUserId(user.getId());
 
         // Get user's liked and favorite songs
-        List<User_Song> likedSongs = userSongRepository.findByUser_idAndUserPreference(user.getId(), UserPreference.LIKED);
-        List<User_Song> favoriteSongs = userSongRepository.findByUser_idAndUserPreference(user.getId(), UserPreference.FAVOURITE);
+        List<User_Song> likedSongs = userSongRepository.findByUserIdAndPreference(user.getId(), UserPreference.LIKED);
+        List<User_Song> favoriteSongs = userSongRepository.findByUserIdAndPreference(user.getId(), UserPreference.FAVOURITE);
 
         Set<Long> userSongIds = new HashSet<>();
         likedSongs.forEach(us -> userSongIds.add(us.getSong_id()));
